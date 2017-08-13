@@ -1,0 +1,31 @@
+{
+  "name": "blunder",
+  "version": "0.1.0",
+  "description": "Simplify assets for phoenix application",
+  "author": "Benjamin Schultzer <benjamin@schultzer.com>",
+  "repository": {},
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -r priv/static/*",
+    "prebuild": "npm run clean -s && mkdir priv/static/css && mkdir priv/static/js",
+    "build": "npm install && npm run build:css && npm run build:js",
+    "build:watch": "parallelshell 'npm run watch:css' 'npm run watch:js'",
+    "build:css": "node-sass --include-path scss assets/css/app.css priv/static/css/app.css",
+    "watch:css": "watch 'npm run build:css' assets/css/",
+    "build:js": "browserify assets/js/app.js > priv/static/js/app.js",
+    "watch:js": "watch 'npm run build:js' assets/js/",
+    "test": "mocha test/",
+    "test:watch": "npm run test -- -w"
+  },
+  "dependencies": {
+    "phoenix": "file:deps/phoenix",
+    "phoenix_html": "file:deps/phoenix_html"
+  },
+  "devDependencies": {
+    "browserify": "14.4.0",
+    "node-sass": "4.5.3",
+    "mocha": "3.4.2",
+    "watch": "1.0.2",
+    "parallelshell": "3.0.1"
+  }
+}

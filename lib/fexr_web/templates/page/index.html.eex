@@ -1,0 +1,48 @@
+<div class="container">
+  <div class="row">
+    <h1>Fexr</h1>
+    <a class="github-button" href="https://github.com/Schultzer/fexr" data-show-count="true" aria-label="Star Schultzer/fexr on GitHub">Star</a>
+  </div>
+
+  <div class="row">
+    <div class="two column">
+      <h5>Latest</h5>
+      <p><%= link "https://fexr.org/api/v1/latest", to: api_path(@conn, :latest) %></p>
+      <p><%= link "https://fexr.org/api/v1/latest?base=EUR", to: api_path(@conn, :latest, %{"base" => "EUR"}) %></p>
+      <p><%= link "https://fexr.org/api/v1/latest?symbols=EUR,USD,JPY", to: api_path(@conn, :latest, %{"symbols" => "EUR,USD,JPY"}) %></p>
+      <p><%= link "https://fexr.org/api/v1/latest?base=DKK&symbols=EUR,USD,JPY", to: api_path(@conn, :latest, %{"base" => "DKK", "symbols" => "EUR,USD,JPY"}) %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="one-third column">
+      <h5>Historical</h5>
+      <p><%= link "https://fexr.org/api/v1/2010-08-06", to: api_path(@conn, :historical, "2010-08-06") %></p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="two column">
+      <h5>Sources</h5>
+      <li>Historical rates are provide by <%= link "IMF", to: "https://www.imf.org/" %></li>
+      <li>Latest rates are provide by  <%= link "Yahoo", to: "https://finance.yahoo.com/" %></li>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="two column">
+      <h5>Elixir modules</h5>
+      <li><%= link "FexrImf", to: "https://github.com/Schultzer/fexr_imf" %></li>
+      <li><%= link "FexrYahoo", to: "https://github.com/Schultzer/fexr_yahoo" %></li>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="two column">
+      <h5>Notice</h5>
+      <li>You can request historical rates from 1995.</li>
+      <li>These exchange rates come with no warrenties.</li>
+    </div>
+  </div>
+
+</div>
