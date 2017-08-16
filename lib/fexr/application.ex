@@ -13,8 +13,8 @@ defmodule Fexr.Application do
       # Start your own worker by calling: Fexr.Worker.start_link(arg1, arg2, arg3)
       # worker(Fexr.Worker, [arg1, arg2, arg3]),
       # Start ConCache
-      supervisor(ConCache, [[ttl_check: :timer.seconds(1), ttl: :timer.seconds(5)], [name: :latest]],[ id: :latest, modules: [ConCache]]),
-	    supervisor(ConCache, [[ttl_check: :timer.seconds(10800), ttl: :timer.hours(720)], [name: :historical]],[ id: :historical, modules: [ConCache]]),
+      supervisor(ConCache, [[ttl_check: :timer.seconds(1), ttl: :timer.hours(1)], [name: :latest]],[ id: :latest, modules: [ConCache]]),
+	    supervisor(ConCache, [[ttl_check: :timer.seconds(1), ttl: :timer.hours(1)], [name: :historical]],[ id: :historical, modules: [ConCache]])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

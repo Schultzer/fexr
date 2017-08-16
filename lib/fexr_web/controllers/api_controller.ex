@@ -13,93 +13,109 @@ defmodule FexrWeb.ApiController do
     |> json(validate_params(params, :historical))
   end
 
-  def validate_params(%{"base" => _base, "date" => _date, "symbols" => _symbols} = params, :historical) do
-    iso = FexrImf.symbols
+  def validate_params(%{"base" => base, "date" => date, "symbols" => symbols} = params, :historical) do
+    ConCache.get_or_store(:historical, "#{date}/#{base}/#{symbols}", fn ->
+      iso = FexrImf.symbols
 
-    params
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:historical)
+      params
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:historical)
+    end)
   end
-  def validate_params(%{"base" => _base, "date" => _date} = params, :historical) do
-    iso = FexrImf.symbols
+  def validate_params(%{"base" => base, "date" => date} = params, :historical) do
+    ConCache.get_or_store(:historical, "#{date}/#{base}", fn ->
+      iso = FexrImf.symbols
 
-    params
-    |> Map.put("symbols", nil)
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:historical)
+      params
+      |> Map.put("symbols", nil)
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:historical)
+    end)
   end
-  def validate_params(%{"date" => _date, "symbols" => _symbols} = params, :historical) do
-    iso = FexrImf.symbols
+  def validate_params(%{"date" => date, "symbols" => symbols} = params, :historical) do
+    ConCache.get_or_store(:historical, "#{date}/USD/#{symbols}", fn ->
+      iso = FexrImf.symbols
 
-    params
-    |> Map.put("base", "USD")
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:historical)
+      params
+      |> Map.put("base", "USD")
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:historical)
+    end)
   end
-  def validate_params(%{"date" => _date} = params, :historical) do
-    iso = FexrImf.symbols
+  def validate_params(%{"date" => date} = params, :historical) do
+    ConCache.get_or_store(:historical, "#{date}/USD", fn ->
+      iso = FexrImf.symbols
 
-    params
-    |> Map.put("base", "USD")
-    |> Map.put("symbols", nil)
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:historical)
+      params
+      |> Map.put("base", "USD")
+      |> Map.put("symbols", nil)
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:historical)
+    end)
   end
-  def validate_params(%{"base" => _base, "symbols" => _symbols} = params, :latest) do
-    iso = FexrYahoo.symbols
-    date = Date.to_string(Date.utc_today)
+  def validate_params(%{"base" => base, "symbols" => symbols} = params, :latest) do
+    ConCache.get_or_store(:latest, "#{base}/#{symbols}", fn ->
+      iso = FexrYahoo.symbols
+      date = Date.to_string(Date.utc_today)
 
-    params
-    |> Map.put("date", date)
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:latest)
+      params
+      |> Map.put("date", date)
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:latest)
+    end)
   end
-  def validate_params(%{"base" => _base} = params, :latest) do
-    iso = FexrYahoo.symbols
-    date = Date.to_string(Date.utc_today)
+  def validate_params(%{"base" => base} = params, :latest) do
+    ConCache.get_or_store(:latest, "#{base}", fn ->
+      iso = FexrYahoo.symbols
+      date = Date.to_string(Date.utc_today)
 
-    params
-    |> Map.put("date", date)
-    |> Map.put("symbols", nil)
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:latest)
+      params
+      |> Map.put("date", date)
+      |> Map.put("symbols", nil)
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:latest)
+    end)
   end
-  def validate_params(%{"symbols" => _symbols} = params, :latest) do
-    iso = FexrYahoo.symbols
-    date = Date.to_string(Date.utc_today)
+  def validate_params(%{"symbols" => symbols} = params, :latest) do
+    ConCache.get_or_store(:latest, "USD/#{symbols}", fn ->
+      iso = FexrYahoo.symbols
+      date = Date.to_string(Date.utc_today)
 
-    params
-    |> Map.put("date", date)
-    |> Map.put("base", "USD")
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:latest)
+      params
+      |> Map.put("date", date)
+      |> Map.put("base", "USD")
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:latest)
+    end)
   end
   def validate_params(%{} = params, :latest) do
-    iso = FexrYahoo.symbols
-    date = Date.to_string(Date.utc_today)
+    ConCache.get_or_store(:latest, "USD", fn ->
+      iso = FexrYahoo.symbols
+      date = Date.to_string(Date.utc_today)
 
-    params
-    |> Map.put("base", "USD")
-    |> Map.put("date", date)
-    |> Map.put("symbols", nil)
-    |> validate_date
-    |> validate_base(iso)
-    |> validate_symbols(iso)
-    |> template(:latest)
+      params
+      |> Map.put("base", "USD")
+      |> Map.put("date", date)
+      |> Map.put("symbols", nil)
+      |> validate_date
+      |> validate_base(iso)
+      |> validate_symbols(iso)
+      |> template(:latest)
+    end)
   end
 
 

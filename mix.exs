@@ -38,6 +38,7 @@ defmodule Fexr.Mixfile do
       {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
+      {:con_cache, "~> 0.12.1"},
       {:fexr_yahoo, github: "Schultzer/fexr_yahoo"},
       {:fexr_imf, github: "Schultzer/fexr_imf"},
       {:distillery, "~> 1.4", runtime: false}
